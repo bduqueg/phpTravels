@@ -1,0 +1,32 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/.gradle/
+/.idea/
+/target/
+/build/
+/bin/
+/out/
+/.scannerwork/
+/.sonar/
+
+# Archivos generados por Windows #
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file 'archivos volcados de memoria'
+*.stackdump
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
