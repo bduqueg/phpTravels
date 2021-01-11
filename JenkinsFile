@@ -1,0 +1,82 @@
+import java.text.SimpleDateFormat
+
+def dateFormat = new SimpleDateFormat("yyyyMMddHHmm")
+def date = new Date()
+def timestamp = dateFormat.format(date).toString()
+def CORREOS = "bduqueg@choucairtesting.com"
+pipeline{
+
+	agent any
+
+	triggers {cron('H 9 * * 1-5')}
+
+	stages {
+		stage('Obtener Fuentes')
+		{
+		 	steps
+		 	{
+				checkout([$class: 'GitSCM', branches: [[name: "master"]],
+                wdoGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [
+                [credentialsId: "bduqueg", url: "https://github.com/bduqueg/phpTravels"]
+                ]])
+			}
+		}
+
+
+		stage('Ejecutar Pruebas') {
+                    steps {
+                        script {
+                            try {
+
+                                bat("gradle clean test aggregate")
+                                echo 'Test Ejecutados'
+                                currentBuild.result = 'SUCCESS'
+                            }
+                            catch (ex) {
+                                echo 'Test Ejecutados con Fallo'
+                                currentBuild.result = 'UNSTABLE'
+                            }
+                        }
+                    }
+                }
+		stage('Generar evidencia'){
+                    steps
+                            {
+                                script
+                                        {
+                                            try
+                                            {
+                                                bat  " rename \"${WORKSPACE}\\target\" serenity_${timestamp}"
+                                                echo 'Backup de evidencias realizado con exito'
+
+                                                publishHTML([
+                                                        allowMissing: false,
+                                                        alwaysLinkToLastBuild: true,
+                                                        keepAll: true,
+                                                        reportDir: "${WORKSPACE}//serenity_${timestamp}",
+                                                        reportFiles: 'index.html',
+                                                        reportName: 'Evidencias ejecución PHPTRAVELS',
+                                                        reportTitles: 'PHPTRAVELS'
+                                                ])
+                                                echo 'Reporte en Html realizado con exito'
+                                            }
+                                            catch(e)
+                                            {
+                                                        echo 'No se realizo el Backup de evidencias'
+                                                        publishHTML([allowMissing: false,
+                                                        alwaysLinkToLastBuild: true,
+                                                        keepAll: true,
+                                                        reportDir: "${WORKSPACE}//target/serenity_${timestamp}",
+                                                        reportFiles: 'index.html',
+                                                        reportName: 'Evidencias ejecución PHPTRAVELS',
+                                                        reportTitles: 'PHPTRAVELS'
+                                                ])
+                                                echo 'Reporte Html realizado con exito'
+                                                currentBuild.result='SUCCESS'
+                                            }
+                                        }
+                            }
+                }
+
+	}
+}
