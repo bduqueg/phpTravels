@@ -28,3 +28,4 @@ dependencies {
     compile 'net.serenity-bdd:serenity-screenplay-webdriver:1.9.9'
 }
 gradle.startParameter.continueOnFailure = true
+testLogging.showStandardStreams = true
