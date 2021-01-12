@@ -68,7 +68,7 @@ pipeline{
                                                         keepAll: true,
                                                         reportDir: "${WORKSPACE}//target/serenity_${timestamp}",
                                                         reportFiles: 'index.html',
-                                                        reportName: 'Evidencias ejecución PHPTRAVELS',
+                                                        reportName: 'Evidencias ejecucion PHPTRAVELS',
                                                         reportTitles: 'PHPTRAVELS'
                                                 ])
                                                 echo 'Reporte Html realizado con exito'

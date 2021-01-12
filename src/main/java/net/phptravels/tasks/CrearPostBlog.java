@@ -11,9 +11,17 @@ import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.SelectFromOptions;
 
+import java.util.logging.Logger;
+
 public class CrearPostBlog implements Task {
+
+    private static final Logger logger = Logger.getLogger(CrearPostBlog.class.getName());
+
     @Override
     public <T extends Actor> void performAs(T actor) {
+
+        String msjCrear = Utilitarios.generarAviso("Creando post");
+        logger.info(msjCrear);
 
         actor.attemptsTo(
                 Click.on(MenuPage.ETIQUETA_BLOG),
@@ -42,6 +50,9 @@ public class CrearPostBlog implements Task {
                 Enter.theValue(Constantes.TEXTO_DESCRIP).into(AddPostPage.INPUT_DESCRIPTION),
                 Click.on(AddPostPage.BUTTON_SUBMIT)
         );
+
+        String msjExitoso = Utilitarios.generarAviso("Post creado Exitosamente");
+        logger.info(msjExitoso);
         Utilitarios.esperaExplicita(10000L);
         actor.attemptsTo(
                 Click.on(AddPostPage.BUTTON_SEARCH_POST),

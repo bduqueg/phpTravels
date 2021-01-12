@@ -3,14 +3,24 @@ package net.phptravels.tasks;
 import net.phptravels.userinterface.BlogCategoriesPage;
 import net.phptravels.userinterface.MenuPage;
 import net.phptravels.util.Constantes;
+import net.phptravels.util.Utilitarios;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
 
+import java.util.logging.Logger;
+
 public class CrearCategoria implements Task {
+
+    private static final Logger logger = Logger.getLogger(CrearCategoria.class.getName());
+
     @Override
     public <T extends Actor> void performAs(T actor) {
+
+        String msjCrear = Utilitarios.generarAviso("Creando categoría");
+        logger.info(msjCrear);
+
         actor.attemptsTo(
                 Click.on(MenuPage.ETIQUETA_BLOG),
                 Click.on(MenuPage.ETIQUETA_BLOG_CATEGORIES)
@@ -32,6 +42,10 @@ public class CrearCategoria implements Task {
         actor.attemptsTo(
                 Click.on(BlogCategoriesPage.BUTTON_ADD_FORM)
         );
+
+        String msjExitoso = Utilitarios.generarAviso("Se creo exitosamente la categoría");
+        logger.info(msjExitoso);
+
         actor.attemptsTo(
                 Click.on(BlogCategoriesPage.BUTTON_SEARCH),
                 Enter.theValue(Constantes.CATEGORYNAME).into(BlogCategoriesPage.INPUT_SEARCH),
